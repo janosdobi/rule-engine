@@ -5,9 +5,13 @@ import home.dj.excel.parser.parse.model.RuleTemplateDTO
 import java.io.File
 import java.io.FileWriter
 
-private val PATH = "${System.getProperty("user.dir")}/build/generated/src/main/kotlin/rule/engine/rules"
 private const val RULE_TEMPLATE = "rule-template.ftl"
 private const val INTERFACE_TEMPLATE = "business-rule-interface-template.ftl"
+private val PATH_SEPARATOR = File.separator
+private val PATH =
+    "${System.getProperty("user.dir")}${PATH_SEPARATOR}build${PATH_SEPARATOR}generated${PATH_SEPARATOR}" +
+            "src${PATH_SEPARATOR}main${PATH_SEPARATOR}kotlin${PATH_SEPARATOR}" +
+            "rule${PATH_SEPARATOR}engine${PATH_SEPARATOR}rules"
 
 class BusinessRuleFileGenerator {
 

@@ -40,3 +40,7 @@ application {
 }
 
 tasks.register<BusinessRuleParser>("parseRulesFromExcel")
+
+tasks.compileKotlin {
+    dependsOn("parseRulesFromExcel")
+}
