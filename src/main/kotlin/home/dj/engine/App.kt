@@ -1,7 +1,10 @@
 package home.dj.engine
 
-import home.dj.rule.engine.rule.TestClass
+import io.micronaut.runtime.Micronaut.*
 
-fun main() {
-    print(TestClass().toString())
+fun main(args: Array<String>) {
+    build()
+        .args(*args)
+        .packages("home.dj")
+        .start()
 }

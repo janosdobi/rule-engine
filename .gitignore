@@ -3,3 +3,14 @@
 build
 gradlew
 gradlew.bat
+.DS_Store
+target/
+out/
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+.factorypath
+Thumbs.db
