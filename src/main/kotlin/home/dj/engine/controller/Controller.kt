@@ -1,7 +1,6 @@
 package home.dj.engine.controller
 
 import home.dj.engine.model.Response
-import home.dj.rule.engine.rule.TestClass
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
