@@ -1,3 +1,6 @@
 micronaut:
   application:
     name: rule-engine
+kafka:
+  bootstrap:
+    servers: localhost:9095

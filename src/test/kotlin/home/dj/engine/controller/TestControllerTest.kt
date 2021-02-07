@@ -13,7 +13,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @MicronautTest
-internal class ControllerTest {
+internal class TestControllerTest {
 
     @Inject
     @field:Client("/")
