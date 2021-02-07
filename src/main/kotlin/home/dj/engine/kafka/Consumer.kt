@@ -7,10 +7,12 @@ import io.micronaut.configuration.kafka.annotation.KafkaListener
 import io.micronaut.configuration.kafka.annotation.OffsetReset
 import io.micronaut.configuration.kafka.annotation.Topic
 
+private const val TOPIC = "test-event"
+
 @KafkaListener(offsetReset = OffsetReset.EARLIEST)
 class Consumer(private val eventHandler: EventHandler) {
 
-    @Topic("test-event")
+    @Topic(TOPIC)
     fun consume(@KafkaKey key: Long, event: CompanyDataUpdatedEvent) {
         eventHandler.handle(event)
     }

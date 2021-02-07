@@ -15,6 +15,8 @@ import java.time.Instant
 import java.time.LocalDate
 import kotlin.random.Random
 
+private const val EVENT_TOPIC = "test-event"
+
 @Controller("/test")
 class TestController(private val producer: Producer) {
 
@@ -36,7 +38,7 @@ class TestController(private val producer: Producer) {
             financialData
         )
         val event = CompanyDataUpdatedEvent(companyData, Timestamp.from(Instant.now()), id)
-        producer.produce(id , event)
+        producer.produce(EVENT_TOPIC, id , event)
         return HttpResponse.noContent()
     }
 }
