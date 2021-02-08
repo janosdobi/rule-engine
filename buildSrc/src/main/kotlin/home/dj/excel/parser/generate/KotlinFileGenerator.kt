@@ -1,7 +1,9 @@
 package home.dj.excel.parser.generate
 
 import home.dj.excel.parser.generate.template.getTemplate
+import home.dj.excel.parser.parse.model.EntityTemplateDTO
 import home.dj.excel.parser.parse.model.RuleTemplateDTO
+import home.dj.excel.parser.parse.model.TemplateDTO
 import java.io.File
 import java.io.FileWriter
 
@@ -22,8 +24,13 @@ class BusinessRuleFileGenerator {
     }
 
     fun generateBusinessRule(ruleTemplateDTO: RuleTemplateDTO) {
-        val kotlinFile = File("$PATH/${ruleTemplateDTO.className}.kt")
+        TODO("not yet implemented")
+        /*val kotlinFile = File("$PATH/${ruleTemplateDTO.className}.kt")
         val fileWriter = FileWriter(kotlinFile)
-        ruleTemplate!!.process(mapOf("ruleTemplateDTO" to ruleTemplateDTO), fileWriter)
+        ruleTemplate!!.process(mapOf("ruleTemplateDTO" to ruleTemplateDTO), fileWriter)*/
+    }
+
+    fun generateBusinessEntity(entityTemplateDTO: EntityTemplateDTO) {
+        TODO("Not yet implemented")
     }
 }
