@@ -36,7 +36,7 @@ class ExcelReader {
             targetProperty = row.getCell(3).stringCellValue,
             operatorType = row.getCell(4).stringCellValue,
             operatorName = row.getCell(5).stringCellValue,
-            values = row.getCell(6).stringCellValue
+            values = if (row.getCell(6).cellType == CellType.STRING) row.getCell(6).stringCellValue else row.getCell(6).numericCellValue.toString()
         )
     }
 }

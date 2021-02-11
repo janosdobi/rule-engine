@@ -1,7 +1,5 @@
-package home.dj.rule.engine.rule
+package home.dj.engine.rule
 
-import home.dj.engine.rule.BusinessRule
-
-class ${ruleTemplateDTO.className} : BusinessRule {
+class ${className} : BusinessRule {
 
 }
