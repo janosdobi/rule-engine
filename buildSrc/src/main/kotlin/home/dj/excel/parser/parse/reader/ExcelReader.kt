@@ -1,8 +1,7 @@
 package home.dj.excel.parser.parse.reader
 
-import home.dj.excel.parser.parse.model.EntityTemplateDTO
-import home.dj.excel.parser.parse.model.RuleTemplateDTO
-import home.dj.excel.parser.parse.model.TemplateDTO
+import home.dj.excel.parser.parse.model.EntityTemplate
+import home.dj.excel.parser.parse.model.RuleTemplate
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -15,22 +14,29 @@ class ExcelReader {
 
     private val businessRuleExcel = XSSFWorkbook(EXCEL_FILE_NAME)
 
-    fun parseDTOs(sheetName: String): Collection<TemplateDTO> {
-        return businessRuleExcel.getSheet(sheetName)
+    fun parseBusinessRules(): Collection<RuleTemplate> {
+        return businessRuleExcel.getSheet(RULE_SHEET)
             .filter { it.getCell(1) != null && it.getCell(1).cellType != CellType.BLANK && it.rowNum != 1 }
-            .map { if (RULE_SHEET == sheetName) mapExcelRowToRule(it) else mapExcelRowToEntity(it) }
+            .map { mapExcelRowToRule(it) }
     }
 
-    private fun mapExcelRowToEntity(row: Row?): EntityTemplateDTO {
-        return EntityTemplateDTO(
-            entityName = row!!.getCell(1).stringCellValue,
-            propertyName = row.getCell(2).stringCellValue,
-            propertyType = row.getCell(3).stringCellValue
+    fun parseEntities(): List<EntityTemplate> {
+        return businessRuleExcel.getSheet(ENTITY_SHEET)
+            .filter { it.getCell(1) != null && it.getCell(1).cellType != CellType.BLANK && it.rowNum != 1 }
+            .map { EntitySheetItem.fromExcelRow(it) }
+            .groupBy { it.entityName }
+            .map { mapToEntityTemplateDTO(it.value) }
+    }
+
+    private fun mapToEntityTemplateDTO(groupedProperties: List<EntitySheetItem>): EntityTemplate {
+        return EntityTemplate(
+            entityName = groupedProperties.first().entityName,
+            properties = groupedProperties.map { it.property }
         )
     }
 
-    private fun mapExcelRowToRule(row: Row?): RuleTemplateDTO {
-        return RuleTemplateDTO(
+    private fun mapExcelRowToRule(row: Row?): RuleTemplate {
+        return RuleTemplate(
             ruleName = row!!.getCell(1).stringCellValue,
             targetEntity = row.getCell(2).stringCellValue,
             targetProperty = row.getCell(3).stringCellValue,
@@ -38,5 +44,19 @@ class ExcelReader {
             operatorName = row.getCell(5).stringCellValue,
             values = if (row.getCell(6).cellType == CellType.STRING) row.getCell(6).stringCellValue else row.getCell(6).numericCellValue.toString()
         )
+    }
+
+    private data class EntitySheetItem(
+        val entityName: String,
+        val property: Pair<String, String>
+    ) {
+        companion object Builder {
+            fun fromExcelRow(row: Row): EntitySheetItem {
+                return EntitySheetItem(
+                    entityName = row.getCell(1).stringCellValue,
+                    property = Pair(row.getCell(2).stringCellValue, row.getCell(3).stringCellValue)
+                )
+            }
+        }
     }
 }

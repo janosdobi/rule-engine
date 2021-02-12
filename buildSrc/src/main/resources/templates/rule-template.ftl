@@ -1,5 +1,8 @@
 package home.dj.engine.rule
 
-class ${className} : BusinessRule {
+import home.dj.engine.model.DataEntity
 
+class ${className} : BusinessRule {
+    override val condition = { dataEntity: DataEntity -> true }
+    override val action = { println("Executed some action based on $this.javaClass.simpleName") }
 }

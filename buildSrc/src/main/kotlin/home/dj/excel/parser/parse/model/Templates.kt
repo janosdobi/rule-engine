@@ -1,18 +1,17 @@
 package home.dj.excel.parser.parse.model
 
-interface TemplateDTO {}
+interface Template
 
-data class EntityTemplateDTO(
+data class EntityTemplate(
     val entityName: String,
-    val propertyName: String,
-    val propertyType: String
-) : TemplateDTO
+    val properties: Collection<Pair<String, String>>
+) : Template
 
-data class RuleTemplateDTO(
+data class RuleTemplate(
     val ruleName: String,
     val targetEntity: String,
     val targetProperty: String,
     val operatorType: String,
     val operatorName: String,
     val values: String
-) : TemplateDTO
+) : Template

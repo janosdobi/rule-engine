@@ -1,4 +1,4 @@
 package home.dj.engine.model
 
-class Consequence {
+interface DataEntity {
 }

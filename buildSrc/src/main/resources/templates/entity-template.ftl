@@ -1,7 +1,7 @@
-package home.dj.rule.engine.rule
+package home.dj.engine.model
 
-import home.dj.engine.rule.BusinessRule
-
-class ${entityTemplateDTO.className} : BusinessRule {
-
-}
+data class ${className}DTO(
+    <#list entityTemplateDTO.properties as property>
+        val ${property.first}: ${property.second},
+    </#list>
+) : DataEntity

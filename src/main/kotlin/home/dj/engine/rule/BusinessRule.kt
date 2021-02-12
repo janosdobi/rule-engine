@@ -1,9 +1,8 @@
 package home.dj.engine.rule
 
-import home.dj.engine.kafka.event.BaseEvent
-import home.dj.engine.model.Consequence
+import home.dj.engine.model.DataEntity
 
 interface BusinessRule {
-
-    fun apply(event: BaseEvent): Consequence
+    val condition: (DataEntity) -> Boolean
+    val action: () -> Unit
 }
