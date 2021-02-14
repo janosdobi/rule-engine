@@ -2,9 +2,9 @@ package home.dj.engine.controller
 
 import home.dj.engine.kafka.Producer
 import home.dj.engine.kafka.event.CompanyDataUpdatedEvent
-import home.dj.engine.model.AddressDTO
-import home.dj.engine.model.CompanyDTO
-import home.dj.engine.model.FinancialDataDTO
+import home.dj.engine.model.Address
+import home.dj.engine.model.Company
+import home.dj.engine.model.FinancialData
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
@@ -23,15 +23,15 @@ class TestController(private val producer: Producer) {
     @Produces(MediaType.APPLICATION_JSON)
     fun index(): HttpResponse<Unit> {
         val id = Random(System.nanoTime()).nextLong()
-        val address = AddressDTO(
+        val address = Address(
             "Hungary", "Szeged", "Zarda", 16
         )
-        val financialData = FinancialDataDTO(
-            400_000.0, 400_000.0, 100_000.0, 50_000.0, 10_000.0
+        val financialData = FinancialData(
+            400_000.0, 400_000.0, 100_0.0, 50_000.0, 10_000.0
         )
-        val companyData = CompanyDTO(
+        val companyData = Company(
             "Test Company Ltd.",
-            "1990-01-01",
+            "2020-01-01",
             "Ltd", listOf("1111", "2222"),
             address,
             financialData

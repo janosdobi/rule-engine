@@ -3,8 +3,10 @@ package home.dj.excel.parser.parse.reader
 import home.dj.excel.parser.parse.model.EntityExcelDTO
 import home.dj.excel.parser.parse.model.RuleExcelDTO
 import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.time.ZoneId
 
 const val RULE_SHEET = "Rules"
 const val ENTITY_SHEET = "Entities"
@@ -42,7 +44,11 @@ class ExcelReader {
             targetProperty = row.getCell(3).stringCellValue,
             operatorType = row.getCell(4).stringCellValue,
             operatorName = row.getCell(5).stringCellValue,
-            values = if (row.getCell(6).cellType == CellType.STRING) row.getCell(6).stringCellValue else row.getCell(6).numericCellValue.toString()
+            values = if (row.getCell(6).cellType == CellType.STRING) row.getCell(6).stringCellValue
+            else if (DateUtil.isCellDateFormatted(row.getCell(6))) row.getCell(6).dateCellValue.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().toString()
+            else row.getCell(6).numericCellValue.toString()
         )
     }
 

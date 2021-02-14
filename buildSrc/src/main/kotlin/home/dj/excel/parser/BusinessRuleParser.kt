@@ -10,9 +10,15 @@ open class BusinessRuleParser : DefaultTask() {
 
     @TaskAction
     fun generateKotlinFiles() {
+
         val businessRuleGenerator = BusinessRuleGenerator()
         val entityGenerator = EntityGenerator()
-        ExcelReader().parseEntities().forEach { entityGenerator.generateKotlinFile(it) }
-        ExcelReader().parseBusinessRules().forEach { businessRuleGenerator.generateKotlinFile(it) }
+
+        val parsedEntities = ExcelReader().parseEntities()
+        val parsedBusinessRules = ExcelReader().parseBusinessRules()
+
+        parsedBusinessRules.forEach { businessRuleGenerator.generateKotlinFile(it) }
+        parsedEntities.forEach { entityGenerator.generateKotlinFile(it, parsedBusinessRules) }
+
     }
 }

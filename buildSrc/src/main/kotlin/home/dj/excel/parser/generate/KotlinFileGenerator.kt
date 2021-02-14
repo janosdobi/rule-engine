@@ -23,13 +23,23 @@ abstract class KotlinFileGenerator {
     abstract fun getDestinationPath(): String
 
     fun generateKotlinFile(excelDTO: ExcelDTO) {
+        this.generateKotlinFile(excelDTO, null)
+    }
+
+    fun generateKotlinFile(excelDTO: ExcelDTO, rules: Collection<ExcelDTO>?) {
         val className = buildClassName(excelDTO.rawClassName)
         val kotlinFile = File("${getDestinationPath()}/${className}.kt")
         val fileWriter = FileWriter(kotlinFile)
-        val templateDataMap = mapOf(
-            "templateDTO" to excelDTO,
-            "className" to className
+        val templateDataMap = mutableMapOf(
+            "data" to excelDTO,
+            "className" to className,
+
         )
+
+        rules?.let {
+            templateDataMap["ruleNames"] = rules.map { buildClassName(it.rawClassName) }
+        }
+
         freemarkerTemplate!!.process(templateDataMap, fileWriter)
     }
 

@@ -5,7 +5,9 @@ import javax.inject.Singleton
 
 @Singleton
 class Engine {
-    fun applyRules(event: BaseEvent) = event.entity.getRules()
-        .filter { it.condition(event.entity) }
-        .forEach { it.action }
+    //TODO business rules should be instantiated only once
+    fun applyRules(event: BaseEvent) = event.getAllEntities()
+        .flatMap { it.getRuleEntityPairs() }
+        .filter { it.second.condition(it.first) }
+        .forEach { it.second.action() }
 }

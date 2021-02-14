@@ -9,7 +9,7 @@ import io.micronaut.configuration.kafka.annotation.Topic
 
 private const val TOPIC = "test-event"
 
-@KafkaListener(offsetReset = OffsetReset.EARLIEST)
+@KafkaListener(offsetReset = OffsetReset.LATEST)
 class Consumer(private val eventHandler: EventHandler) {
 
     @Topic(TOPIC)
