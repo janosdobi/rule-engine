@@ -63,8 +63,8 @@ application {
     mainClass.set("home.dj.engine.AppKt")
 }
 
-tasks.register<BusinessRuleParser>("parseRulesFromExcel")
+tasks.register<BusinessRuleParser>("parseExcel")
 
 tasks.compileKotlin {
-    dependsOn("parseRulesFromExcel")
+    dependsOn("parseExcel")
 }

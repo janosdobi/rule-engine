@@ -1,55 +1,36 @@
 package home.dj.excel.parser.generate
 
-import home.dj.excel.parser.generate.template.getTemplate
-import home.dj.excel.parser.parse.model.EntityTemplate
-import home.dj.excel.parser.parse.model.RuleTemplate
+import freemarker.template.Configuration
+import freemarker.template.Template
+import freemarker.template.TemplateExceptionHandler
+import freemarker.template.Version
+import home.dj.excel.parser.parse.model.ExcelDTO
 import java.io.File
 import java.io.FileWriter
 
-private const val RULE_TEMPLATE = "rule-template.ftl"
-private const val ENTITY_TEMPLATE = "entity-template.ftl"
-private val PATH_SEPARATOR = File.separator
-private val RULE_PATH =
-    "${System.getProperty("user.dir")}${PATH_SEPARATOR}build${PATH_SEPARATOR}generated${PATH_SEPARATOR}" +
-            "src${PATH_SEPARATOR}main${PATH_SEPARATOR}kotlin${PATH_SEPARATOR}" +
-            "home${PATH_SEPARATOR}dj${PATH_SEPARATOR}engine${PATH_SEPARATOR}rule"
+internal val PATH_SEPARATOR = File.separator
 
-private val ENTITY_PATH = "${System.getProperty("user.dir")}${PATH_SEPARATOR}build${PATH_SEPARATOR}generated${PATH_SEPARATOR}" +
-        "src${PATH_SEPARATOR}main${PATH_SEPARATOR}kotlin${PATH_SEPARATOR}" +
-        "home${PATH_SEPARATOR}dj${PATH_SEPARATOR}engine${PATH_SEPARATOR}model"
+abstract class KotlinFileGenerator {
 
-class KotlinFileGenerator {
-
-    private val ruleTemplate = getTemplate(RULE_TEMPLATE)
-    private val entityTemplate = getTemplate(ENTITY_TEMPLATE)
-    private val ruleDirectory = File(RULE_PATH)
-    private val entityDirectory = File(ENTITY_PATH)
+    private val freemarkerTemplate = getFreemarkerTemplate(getTemplateName())
+    private val destinationDirectory = File(getDestinationPath())
 
     init {
-        if (!ruleDirectory.exists()) ruleDirectory.mkdirs()
-        if (!entityDirectory.exists()) entityDirectory.mkdirs()
+        if (!destinationDirectory.exists()) destinationDirectory.mkdirs()
     }
 
-    fun generateBusinessRule(ruleTemplateDTO: RuleTemplate) {
-        val className = buildClassName(ruleTemplateDTO.ruleName)
-        val kotlinFile = File("$RULE_PATH/${className}.kt")
-        val fileWriter = FileWriter(kotlinFile)
-        val templateDataMap = mapOf(
-            "ruleTemplateDTO" to ruleTemplateDTO,
-            "className" to className
-        )
-        ruleTemplate!!.process(templateDataMap, fileWriter)
-    }
+    abstract fun getTemplateName(): String
+    abstract fun getDestinationPath(): String
 
-    fun generateBusinessEntity(entityTemplateDTO: EntityTemplate) {
-        val className = buildClassName(entityTemplateDTO.entityName)
-        val kotlinFile = File("$ENTITY_PATH/${className}DTO.kt")
+    fun generateKotlinFile(excelDTO: ExcelDTO) {
+        val className = buildClassName(excelDTO.rawClassName)
+        val kotlinFile = File("${getDestinationPath()}/${className}.kt")
         val fileWriter = FileWriter(kotlinFile)
         val templateDataMap = mapOf(
-            "entityTemplateDTO" to entityTemplateDTO,
+            "templateDTO" to excelDTO,
             "className" to className
         )
-        entityTemplate!!.process(templateDataMap, fileWriter)
+        freemarkerTemplate!!.process(templateDataMap, fileWriter)
     }
 
     private fun buildClassName(rawClassName: String): String {
@@ -58,5 +39,13 @@ class KotlinFileGenerator {
             .split(" ")
             .map { it.capitalize() }
             .reduce { s1, s2 -> s1 + s2 }
+    }
+
+    private fun getFreemarkerTemplate(templateName: String): Template? {
+        val templateConfig = Configuration(Version(2, 3, 30))
+        templateConfig.setClassLoaderForTemplateLoading(KotlinFileGenerator::class.java.classLoader, "templates")
+        templateConfig.defaultEncoding = "UTF-8"
+        templateConfig.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
+        return templateConfig.getTemplate(templateName)
     }
 }
