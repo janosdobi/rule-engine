@@ -15,11 +15,11 @@ data class ${className}(
         <#if ruleNames?size != 0>
         listOf(
         <#list ruleNames as ruleName>
-            Pair(this, ${ruleName}()),
+            Pair(this, "${ruleName}"),
         </#list>
         )
         <#else>
-        Collections.emptyList<Pair<DataEntity, BusinessRule>>()
+        Collections.emptyList<Pair<DataEntity, String>>()
         </#if>
     }
 }

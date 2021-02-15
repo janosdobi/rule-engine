@@ -16,5 +16,5 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type
     Type(value = FinancialData::class, name = "FinancialData")
 )
 interface DataEntity {
-    val getRuleEntityPairs: () -> Collection<Pair<DataEntity,BusinessRule>>
+    val getRuleEntityPairs: () -> Collection<Pair<DataEntity,String>>
 }

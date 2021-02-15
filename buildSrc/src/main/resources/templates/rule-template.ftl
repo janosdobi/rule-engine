@@ -1,6 +1,7 @@
 package home.dj.engine.rule
 
 import home.dj.engine.model.*
+import javax.inject.Singleton
 <#if data.operatorType == "date">
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -14,6 +15,7 @@ private val DATE_TO_CHECK = LocalDate.parse("${data.values}", DateTimeFormatter.
 private val VALUE_TO_CHECK = ${data.values}
 </#if>
 
+@Singleton
 class ${className} : BusinessRule {
 
     override val condition = { dataEntity : DataEntity ->
@@ -29,4 +31,8 @@ class ${className} : BusinessRule {
     }
 
     override val action = { println("Executed some action based on $this.javaClass.simpleName") }
+
+    override fun getName(): String? {
+        return this::class.simpleName
+    }
 }

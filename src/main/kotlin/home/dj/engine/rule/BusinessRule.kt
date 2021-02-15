@@ -5,4 +5,5 @@ import home.dj.engine.model.DataEntity
 interface BusinessRule {
     val condition: (DataEntity) -> Boolean
     val action: () -> Unit
+    fun getName(): String?
 }
