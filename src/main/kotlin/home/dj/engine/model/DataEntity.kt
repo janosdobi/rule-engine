@@ -1,11 +1,9 @@
 package home.dj.engine.model
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import home.dj.engine.rule.BusinessRule
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-//TODO this is not so good here
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY
@@ -16,5 +14,5 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type
     Type(value = FinancialData::class, name = "FinancialData")
 )
 interface DataEntity {
-    val getRuleEntityPairs: () -> Collection<Pair<DataEntity,String>>
+    val getEntityRuleNamePairs: () -> Collection<Pair<DataEntity, String>>
 }

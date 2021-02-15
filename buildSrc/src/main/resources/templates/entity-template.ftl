@@ -11,7 +11,7 @@ data class ${className}(
 ) : DataEntity {
     @Transient
     @JsonIgnore
-    override val getRuleEntityPairs = {
+    override val getEntityRuleNamePairs = {
         <#if ruleNames?size != 0>
         listOf(
         <#list ruleNames as ruleName>

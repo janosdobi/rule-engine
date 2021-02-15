@@ -27,7 +27,7 @@ class TestController(private val producer: Producer) {
             "Hungary", "Szeged", "Zarda", 16
         )
         val financialData = FinancialData(
-            400_000.0, 400_000.0, 100_0.0, 50_000.0, 10_000.0
+            400_000.0, 400_000.0, 100_0.0, 50_000.0, 10_000.0, address
         )
         val companyData = Company(
             "Test Company Ltd.",
